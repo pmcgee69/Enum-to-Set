@@ -43,13 +43,18 @@ implementation
   class function Str.map<T> ( sa : TArray<string>; f : TFunc<string,T> ) : TList<T>;
       begin
             result := TList<T>.create();
-            for var s in sa do  result.add( f( trim(s)) );
+            for var s in sa do result.add( f(s) );
       end;
 
 
   function Str_range_to_tuple ( s : string ) : Tupcc;
       begin
-         if  length(s) = 1                    then exit ( result.create( s[1], #0 ) );
+         s :=trim(s);
+
+         if  length(s) = 1                    then exit ( result.create( s[1], #0  ) );
+
+         if (length(s) = 2) and ( s[2]='-' )  then exit ( result.create( s[1], 'z' ) );
+         if (length(s) = 2) and ( s[1]='-' )  then exit ( result.create( 'a' , s[1]) );
 
          if (length(s) <> 3) or (s[2] <> '-') then exit; {error}
 
